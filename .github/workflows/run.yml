@@ -1,0 +1,15 @@
+name: Run Transformer
+
+on:
+  schedule:
+  - cron: "*/15 * * * *"
+
+jobs:
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+  run:
+    runs:
+      using: 'docker'
+      image: 'Dockerfile'
