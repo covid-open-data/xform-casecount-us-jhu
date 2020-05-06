@@ -1,6 +1,6 @@
 on:
   schedule:
-  - cron: "*/15 * * * *"
+  - cron: "*/5 * * * *"
 
 jobs:
   run:
@@ -10,4 +10,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Run
-        uses: ./.github/actions/run.yml
+        uses: ./.github/actions/run
