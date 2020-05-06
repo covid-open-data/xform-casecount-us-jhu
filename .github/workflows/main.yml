@@ -10,4 +10,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Run
-        uses: ./.github/actions/run
+        uses: ./.github/actions/action
