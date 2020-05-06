@@ -1,0 +1,13 @@
+on:
+  schedule:
+  - cron: "*/15 * * * *"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    name: Run Transformer
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run
+        uses: ./.github/actions/run.yml
