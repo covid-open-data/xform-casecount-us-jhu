@@ -99,9 +99,19 @@ us_process <- function(x, name) {
 usdc <- us_process(usdc, "cases")
 usdd <- us_process(usdd, "deaths")
 
+
 # join cases and deaths
 usd <- dplyr::left_join(usdc, usdd,
   by = c("fips_county", "fips_state", "date"))
+
+# filter out leading days in each county (zero cases)
+# and get rid of counties with no cases at all
+usd <- usd %>%
+  group_by(fips_county) %>%
+  mutate(all_zero = all(cases == 0)) %>%
+  filter(!all_zero) %>%
+  mutate(min_zero_date = min(date[cases > 0])) %>%
+  filter(date >= min_zero_date)
 
 usd_state <- usd %>%
   dplyr::group_by(fips_state, date) %>%
