@@ -1,6 +1,12 @@
+#on:
+#  schedule:
+#  - cron: "*/5 * * * *"
+
+# For testing, use the star action in GitHub to trigger the action.
+# TODO: Remove this after testing.
 on:
-  schedule:
-  - cron: "*/5 * * * *"
+  watch:
+    types: [started]
 
 jobs:
   run:
