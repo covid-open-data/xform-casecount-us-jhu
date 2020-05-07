@@ -1,19 +1,18 @@
 # Install all dependencies for the transformer if not already installed.
 if ! `apt -qq list r-base 2>/dev/null | grep -qE "(installed|upgradeable)"`; then
   export DEBIAN_FRONTEND=noninteractive
+  apt-get update
 
-  ln -fs /usr/share/zoneinfo/UTC /etc/localtime
-  apt install -y tzdata
-  dpkg-reconfigure --frontend noninteractive tzdata
+  apt-get install -y software-properties-common
+  apt-get install -y dirmngr --install-recommends
+  apt-get install -y apt-transport-https
 
-  # Install the `add-apt-repository` utility.
-  apt install -y software-properties-common
+  echo "Installing R..."
+  apt-key adv --keyserver keys.gnupg.net --recv-key 'E19F5F87128899B192B1A2C2AD5F960A256A04AF' --no-tty
+  add-apt-repository 'deb http://cloud.r-project.org/bin/linux/debian buster-cran35/'
+  apt-get update
+  apt-get install -y r-base r-base-core r-base-dev r-recommended
+  apt-get install -y r-cran-tidyverse
 
-  add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'
-  apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-  apt update
-  gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-  gpg -a --export E298A3A825C0D65DFD57CBB651716619E084DAB9 | apt-key add -
-  apt install -y r-base r-base-core r-recommended r-base-dev
-  apt install -y r-cran-tidyverse
+  R --version
 fi
