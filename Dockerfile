@@ -1,3 +1,3 @@
-FROM debian:10.3
+FROM ubuntu:20.04
 
 ENTRYPOINT "${GITHUB_WORKSPACE}/scripts/docker/entrypoint.sh"
