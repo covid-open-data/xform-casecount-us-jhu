@@ -64,6 +64,7 @@ global <- admin0 %>%
 readr::write_csv(admin0, "admin0.csv")
 readr::write_csv(global, "global.csv")
 
+########
 # now pull US state and county-level JHU data
 
 us_urls <- list(
@@ -80,14 +81,16 @@ us_process <- function(x, name) {
 
   x %>%
     dplyr::mutate(
-      fips_county = sprintf("%05d", FIPS),
-      fips_state = substr(fips_county, 1, 2)
+      admin0_code = "US",
+      admin2_code = sprintf("%05d", FIPS),
+      admin1_code = substr(admin2_code, 1, 2)
     ) %>%
     # 80 and 90 are "out of state" or "unassigned"
     # 88 and 99 are cruise ships
     # 00 have NA FIPS - ignore all these for now
-    dplyr::filter(!fips_state %in% c("80", "90", "00", "88", "99")) %>%
-    dplyr::select(fips_county, fips_state, tidyselect::ends_with("20")) %>%
+    dplyr::filter(!admin1_code %in% c("80", "90", "00", "88", "99")) %>%
+    dplyr::select(admin0_code, admin1_code, admin2_code,
+      tidyselect::ends_with("20")) %>%
     tidyr::pivot_longer(
       cols = ends_with("20"),
       names_to = "date",
@@ -99,15 +102,14 @@ us_process <- function(x, name) {
 usdc <- us_process(usdc, "cases")
 usdd <- us_process(usdd, "deaths")
 
-
 # join cases and deaths
 usd <- dplyr::left_join(usdc, usdd,
-  by = c("fips_county", "fips_state", "date"))
+  by = c("admin0_code", "admin2_code", "admin1_code", "date"))
 
 # filter out leading days in each county (zero cases)
 # and get rid of counties with no cases at all
 usd <- usd %>%
-  group_by(fips_county) %>%
+  group_by(admin2_code) %>%
   mutate(all_zero = all(cases == 0)) %>%
   filter(!all_zero) %>%
   mutate(min_zero_date = min(date[cases > 0])) %>%
@@ -115,7 +117,7 @@ usd <- usd %>%
   dplyr::select(-all_zero, -min_zero_date)
 
 usd_state <- usd %>%
-  dplyr::group_by(fips_state, date) %>%
+  dplyr::group_by(admin0_code, admin1_code, date) %>%
   dplyr::summarise(cases = sum(cases), deaths = sum(deaths))
 
 readr::write_csv(usd, "admin2_US.csv")
