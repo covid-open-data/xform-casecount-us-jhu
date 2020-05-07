@@ -2,4 +2,4 @@ name: 'Run Transformer'
 description: 'Runs the transformer.'
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: '../../Dockerfile'
