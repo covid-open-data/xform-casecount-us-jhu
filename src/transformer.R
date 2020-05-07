@@ -61,8 +61,8 @@ global <- admin0 %>%
   dplyr::group_by(date) %>%
   dplyr::summarise(cases = sum(cases), deaths = sum(deaths))
 
-readr::write_csv(admin0, "admin0.csv")
-readr::write_csv(global, "global.csv")
+readr::write_csv(admin0, "output/admin0.csv")
+readr::write_csv(global, "output/global.csv")
 
 ########
 # now pull US state and county-level JHU data
@@ -120,5 +120,5 @@ usd_state <- usd %>%
   dplyr::group_by(admin0_code, admin1_code, date) %>%
   dplyr::summarise(cases = sum(cases), deaths = sum(deaths))
 
-readr::write_csv(usd, "admin2_US.csv")
-readr::write_csv(usd_state, "admin1_US.csv")
+readr::write_csv(usd, "output/admin2_US.csv")
+readr::write_csv(usd_state, "output/admin1_US.csv")
