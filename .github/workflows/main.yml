@@ -18,4 +18,4 @@ jobs:
       - name: Run Xform
         uses: ./.github/actions/run-xform
         with:
-          xform-command: '"Rscript ${GITHUB_WORKSPACE}/src/xform.R"'
+          xform-command: '"Rscript $${GITHUB_WORKSPACE}/src/xform.R"'
