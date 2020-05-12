@@ -19,6 +19,8 @@ INSTALL_STATUS=$?
 
 if [ ${INSTALL_STATUS} -eq 0 ]; then
   echo "Executing: ${XFORM_COMMAND}"
+  ls /github/workspace
+  ls ${GITHUB_WORKSPACE}
   eval "${XFORM_COMMAND}"
   exit $?
 else
