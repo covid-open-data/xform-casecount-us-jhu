@@ -1,6 +1,6 @@
 #!/bin/sh
 
-XFORM_COMMAND="${1}"
+XFORM_COMMAND=${1}
 
 if [ -z "${GITHUB_WORKSPACE}" ]; then
   echo "GITHUB_WORKSPACE not set, aborting."
@@ -19,8 +19,6 @@ INSTALL_STATUS=$?
 
 if [ ${INSTALL_STATUS} -eq 0 ]; then
   echo "Executing: ${XFORM_COMMAND}"
-  ls /github/workspace
-  ls ${GITHUB_WORKSPACE}
   eval "${XFORM_COMMAND}"
   exit $?
 else
