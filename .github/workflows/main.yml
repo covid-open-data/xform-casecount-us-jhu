@@ -16,6 +16,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Run Xform
-        uses: .github/actions/run-xform
+        uses: ./.github/actions/run-xform
         with:
           xform-command: '"Rscript ${GITHUB_WORKSPACE}/src/xform.R"'
