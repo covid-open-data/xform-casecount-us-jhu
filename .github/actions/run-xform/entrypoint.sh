@@ -17,6 +17,8 @@ cd "${GITHUB_WORKSPACE}"
 .github/actions/run-xform/install.sh
 INSTALL_STATUS=$?
 
+Rscript --version
+
 if [ ${INSTALL_STATUS} -eq 0 ]; then
   echo "Executing: ${XFORM_COMMAND}"
   eval "${XFORM_COMMAND}"
@@ -30,5 +32,6 @@ if [ ${INSTALL_STATUS} -eq 0 ]; then
 
   exit ${XFORM_STATUS}
 else
+  echo "Install failed."
   exit 1
 fi
