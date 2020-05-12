@@ -53,9 +53,18 @@ admin0 <- d %>%
   dplyr::rename(country = "country_region") %>%
   dplyr::arrange(country, date)
 
-# TODO: need to use "datautils" functions here to get ISO2 codes
+# now need to get ISO2 codes since they don't provide them...
+lookup <- readr::read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv", na = "")
 
-# TODO: need to use "datautils" here to roll up to continent, WHO region
+lookup <- lookup %>%
+  select(iso2, Country_Region) %>%
+  distinct() %>%
+  rename(admin0_code = iso2, country = Country_Region)
+
+lookup$admin0_code[is.na(lookup$admin0_code)] <- "ZZ"
+
+admin0 <- left_join(admin0, lookup) %>%
+  select(admin0_code, date, cases, deaths)
 
 global <- admin0 %>%
   dplyr::group_by(date) %>%
