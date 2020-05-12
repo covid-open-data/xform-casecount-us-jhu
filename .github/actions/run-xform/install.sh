@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Install all dependencies for the transformer if not already installed.
 if ! `apt -qq list r-base 2>/dev/null | grep -qE "(installed|upgradeable)"`; then

@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash -x
 
-XFORM_COMMAND=${1}
+XFORM_COMMAND=$@
 
 if [ -z "${GITHUB_WORKSPACE}" ]; then
   echo "GITHUB_WORKSPACE not set, aborting."
@@ -17,11 +17,9 @@ cd "${GITHUB_WORKSPACE}"
 .github/actions/run-xform/install.sh
 INSTALL_STATUS=$?
 
-Rscript --version
-
 if [ ${INSTALL_STATUS} -eq 0 ]; then
   echo "Executing: ${XFORM_COMMAND}"
-  eval "${XFORM_COMMAND}"
+  eval ${XFORM_COMMAND}
   XFORM_STATUS=$?
 
   if [ ${XFORM_STATUS} -eq 0 ]; then
