@@ -20,7 +20,15 @@ INSTALL_STATUS=$?
 if [ ${INSTALL_STATUS} -eq 0 ]; then
   echo "Executing: ${XFORM_COMMAND}"
   eval "${XFORM_COMMAND}"
-  exit $?
+  XFORM_STATUS=$?
+
+  if [ ${XFORM_STATUS} -eq 0 ]; then
+    echo "Success."
+  else
+    echo "Fail."
+  fi
+
+  exit ${XFORM_STATUS}
 else
   exit 1
 fi
