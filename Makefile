@@ -1,13 +1,14 @@
-.PHONY: dc-up
-dc-up:
-	sudo docker-compose up
+.PHONY: run-xform
+run-xform:
+	cd .github/actions/run-xform; make dc-up; cd -
 
 
-.PHONY: dc-up-build
-dc-up-build:
-	sudo docker-compose up --build
+.PHONY: run-xform-build
+run-xform-build:
+	cd .github/actions/run-xform; make dc-up-build; cd -
 
-.PHONY: dc-build-no-cache
-dc-build-no-cache:
-	sudo docker-compose build --no-cache
+
+.PHONY: run-xform-build-no-cache
+run-xform-build-no-cache:
+	cd .github/actions/run-xform; make dc-build-no-cache; cd -
 

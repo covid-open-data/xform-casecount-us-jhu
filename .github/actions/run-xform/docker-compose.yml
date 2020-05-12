@@ -1,8 +1,9 @@
 version: '2'
 services:
-  runner:
+  xform_runner:
     build: .
+    command: '"Rscript src/xform.R"'
     environment:
       - GITHUB_WORKSPACE=/github/workspace
     volumes:
-      - ./:/github/workspace
+      - ../../../:/github/workspace

@@ -1,5 +1,8 @@
+#!/bin/sh
+
 # Install all dependencies for the transformer if not already installed.
 if ! `apt -qq list r-base 2>/dev/null | grep -qE "(installed|upgradeable)"`; then
+  echo "Installing dependencies..."
   export DEBIAN_FRONTEND=noninteractive
   apt-get update
 
@@ -15,4 +18,7 @@ if ! `apt -qq list r-base 2>/dev/null | grep -qE "(installed|upgradeable)"`; the
   apt-get install -y r-cran-tidyverse
 
   R --version
+  exit $?
 fi
+
+exit 0

@@ -2,4 +2,4 @@
 
 # Run Locally
 
-`sudo docker-compose up` or `make dc-up`
+`make run-xform`
