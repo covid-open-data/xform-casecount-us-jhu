@@ -1,0 +1,9 @@
+version: '2'
+services:
+  xform_runner:
+    build: .
+    environment:
+      - GITHUB_WORKSPACE=/github/workspace
+      - SKIP_PUSH=1
+    volumes:
+      - ../../../:/github/workspace

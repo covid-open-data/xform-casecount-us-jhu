@@ -19,3 +19,5 @@ jobs:
         uses: ./.github/actions/run-xform
         with:
           xform-command: 'Rscript ${GITHUB_WORKSPACE}/src/xform.R'
+      - name: Git Push
+        uses: ./.github/actions/git-push
