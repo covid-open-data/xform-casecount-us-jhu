@@ -15,7 +15,7 @@ if [ -z "${GIT_NAME}" ]; then
   GIT_NAME="SYSTEM"
 fi
 
-cd "${GITHUB_WORKSPACE}/output"
+cd "${GITHUB_WORKSPACE}"
 
 .github/actions/git-push/install.sh
 INSTALL_STATUS=$?
@@ -25,24 +25,32 @@ if [ ${INSTALL_STATUS} -ne 0 ]; then
   exit 1
 fi
 
+cd "${GITHUB_WORKSPACE}/output"
+
 git config --global user.email "${GIT_EMAIL}"
 git config --global user.name "${GIT_NAME}"
 
-if $(git status . | grep "Changes not staged for commit"); then
+if $(git status . | grep -q "Changes not staged for commit"); then
   echo "Staging changes."
   git add .
 fi
 
-if $(git status . | grep "Changes to be committed"); then
-  echo "Committing changes."
-  git commit -m "Auto commit: $(date)"
+if $(git status . | grep -q "Changes to be committed"); then
+
+  if [ -z "${SKIP_COMMIT}" ]; then
+    echo "Committing changes."
+    git commit -m "Auto commit: $(date)"
+  else
+    echo "Skipping git commit..."
+  fi
+
 fi
 
 if [ -z "${SKIP_PUSH}" ]; then
-  echo "Skipping git push..."
-else
   echo "Pushing changes."
   git push --force
+else
+  echo "Skipping git push..."
 fi
 PUSH_STATUS=$?
 
