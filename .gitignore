@@ -1,3 +1,2 @@
-.idea
-.vscode
-.venv
+.DS_Store
+_ignore
