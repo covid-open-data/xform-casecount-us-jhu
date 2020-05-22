@@ -1,6 +1,8 @@
 #!/bin/bash
+###############################################################################
+# Install dependencies.
+###############################################################################
 
-# Install all dependencies for the transformer if not already installed.
 if ! $(apt -qq list r-base 2>/dev/null | grep -qE "(installed|upgradeable)"); then
   echo "Installing dependencies..."
   export DEBIAN_FRONTEND=noninteractive
@@ -15,7 +17,6 @@ if ! $(apt -qq list r-base 2>/dev/null | grep -qE "(installed|upgradeable)"); th
   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
   apt-get update
   apt-get install -y r-base r-base-core r-base-dev r-recommended
-  apt-get install -y r-cran-tidyverse
 
   R --version
   exit $?

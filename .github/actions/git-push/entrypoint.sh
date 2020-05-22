@@ -1,4 +1,7 @@
 #!/bin/bash
+###############################################################################
+# Docker container entrypoint script.
+###############################################################################
 
 if [ -z "${GITHUB_WORKSPACE}" ]; then
   echo "GITHUB_WORKSPACE not set, aborting."

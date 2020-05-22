@@ -18,6 +18,6 @@ jobs:
       - name: Run Xform
         uses: ./.github/actions/run-xform
         with:
-          xform-command: 'Rscript ${GITHUB_WORKSPACE}/src/xform.R'
+          xform-command: '${GITHUB_WORKSPACE}/src/xform.sh'
       - name: Git Push
         uses: ./.github/actions/git-push

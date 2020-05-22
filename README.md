@@ -2,4 +2,6 @@
 
 # Run Locally
 
-`make run-xform`
+`make run-workflow`
+
+See [Makefile](Makefile) for all commands.
