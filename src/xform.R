@@ -149,7 +149,7 @@ usd_state <- usd %>%
   dplyr::summarise(cases = sum(cases), deaths = sum(deaths))
 
 usd_country <- usd %>%
-  dplyr::group_by(date) %>%
+  dplyr::group_by(admin0_code, date) %>%
   dplyr::summarise(cases = sum(cases), deaths = sum(deaths))
 
 readr::write_csv(usd, "output/admin2/US.csv")
