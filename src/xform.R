@@ -40,6 +40,8 @@ process <- function(x, name) {
 dc <- process(dc, "n_case")
 dd <- process(dd, "n_death")
 
+message("Most recent date for global data: ", max(dc$date))
+
 # join cases and deaths
 d <- dplyr::left_join(dc, select(dd, -lat, -long),
   by = c("province_state", "country_region", "date"))
@@ -61,25 +63,25 @@ admin0 <- d %>%
   dplyr::arrange(country, date)
 
 # now need to get ISO2 codes since they don't provide them...
-lookup <- readr::read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv", na = "")
+lookup <- suppressMessages(readr::read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv", na = ""))
 
 lookup <- lookup %>%
-  select(iso2, Country_Region) %>%
-  distinct() %>%
-  rename(admin0_code = iso2, country = Country_Region)
+  dplyr::select(iso2, Country_Region) %>%
+  dplyr::distinct() %>%
+  dplyr::rename(admin0_code = iso2, country = Country_Region)
 
 lookup$admin0_code[is.na(lookup$admin0_code)] <- "ZZ"
 
-admin0 <- left_join(admin0, lookup) %>%
-  select(admin0_code, date, cases, deaths)
+admin0 <- dplyr::left_join(admin0, lookup, by = "country") %>%
+  dplyr::select(admin0_code, date, cases, deaths)
 
 continents <- admin0 %>%
-  left_join(geoutils::admin0, by = "admin0_code") %>%
+  dplyr::left_join(geoutils::admin0, by = "admin0_code") %>%
   dplyr::group_by(continent_code, date) %>%
   dplyr::summarise(cases = sum(cases), deaths = sum(deaths))
 
 who_regions <- admin0 %>%
-  left_join(geoutils::admin0, by = "admin0_code") %>%
+  dplyr::left_join(geoutils::admin0, by = "admin0_code") %>%
   dplyr::group_by(who_region_code, date) %>%
   dplyr::summarise(cases = sum(cases), deaths = sum(deaths))
 
@@ -130,26 +132,28 @@ us_process <- function(x, name) {
 usdc <- us_process(usdc, "cases")
 usdd <- us_process(usdd, "deaths")
 
+message("Most recent date for US data: ", max(usdc$date))
+
 # join cases and deaths
 usd <- dplyr::left_join(usdc, usdd,
   by = c("admin0_code", "admin2_code", "admin1_code", "date"))
 
+usd_country <- usd %>%
+  dplyr::group_by(admin0_code, date) %>%
+  dplyr::summarise(cases = sum(cases), deaths = sum(deaths))
+
 # filter out leading days in each county (zero cases)
 # and get rid of counties with no cases at all
 usd <- usd %>%
-  group_by(admin2_code) %>%
-  mutate(all_zero = all(cases == 0)) %>%
-  filter(!all_zero) %>%
-  mutate(min_zero_date = min(date[cases > 0])) %>%
-  filter(date >= min_zero_date) %>%
+  dplyr::group_by(admin2_code) %>%
+  dplyr::mutate(all_zero = all(cases == 0)) %>%
+  dplyr::filter(!all_zero) %>%
+  dplyr::mutate(min_zero_date = min(date[cases > 0])) %>%
+  dplyr::filter(date >= min_zero_date) %>%
   dplyr::select(-all_zero, -min_zero_date)
 
 usd_state <- usd %>%
   dplyr::group_by(admin0_code, admin1_code, date) %>%
-  dplyr::summarise(cases = sum(cases), deaths = sum(deaths))
-
-usd_country <- usd %>%
-  dplyr::group_by(admin0_code, date) %>%
   dplyr::summarise(cases = sum(cases), deaths = sum(deaths))
 
 readr::write_csv(usd, "output/admin2/US.csv")
