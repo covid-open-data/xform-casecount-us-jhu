@@ -37,6 +37,17 @@ process <- function(x, name) {
     dplyr::mutate(date = fix_date(date))
 }
 
+
+dsumm <- d %>%
+  group_by(country_region, date) %>%
+  summarise(
+    cases = sum(n_case),
+    deaths = sum(n_death)) %>%
+  ungroup() %>%
+  filter(!(cases == 0 & deaths == 0)) %>%
+  rename(region = "country_region")
+
+
 dc <- process(dc, "n_case")
 dd <- process(dd, "n_death")
 
@@ -49,18 +60,18 @@ d <- dplyr::left_join(dc, select(dd, -lat, -long),
 # they break things down to admin1 level in some cases - want to roll these up
 # however, we want overseas regions / territories to still be separate
 fix <- c("Denmark", "France", "Netherlands", "United Kingdom")
-idx <- which(dc$country_region %in% fix & dc$province_state != "")
-dc$country_region[idx] <- dc$province_state[idx]
+idx <- which(d$country_region %in% fix & d$province_state != "")
+d$country_region[idx] <- d$province_state[idx]
 
 admin0 <- d %>%
   dplyr::group_by(country_region, date) %>%
   dplyr::summarise(
-    cases = sum(n_case),
-    deaths = sum(n_death)) %>%
+    cases = sum(n_case, na.rm = TRUE),
+    deaths = sum(n_death, na.rm = TRUE)) %>%
+  dplyr::filter(date >= min(date[cases > 0])) %>%
   dplyr::ungroup() %>%
-  dplyr::filter(!(cases == 0 & deaths == 0)) %>%
-  dplyr::rename(country = "country_region") %>%
-  dplyr::arrange(country, date)
+  dplyr::rename(admin0_name = "country_region") %>%
+  dplyr::arrange(admin0_name, date)
 
 # now need to get ISO2 codes since they don't provide them...
 lookup <- suppressMessages(readr::read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv", na = ""))
@@ -68,16 +79,39 @@ lookup <- suppressMessages(readr::read_csv("https://raw.githubusercontent.com/CS
 lookup <- lookup %>%
   dplyr::select(iso2, Country_Region) %>%
   dplyr::distinct() %>%
-  dplyr::rename(admin0_code = iso2, country = Country_Region)
+  dplyr::rename(admin0_code = iso2, admin0_name = Country_Region)
+
+# need to fix issue with countries with multiple country codes
+repeats <- lookup %>%
+  group_by(admin0_name) %>%
+  tally() %>%
+  filter(n > 1) %>%
+  pull(admin0_name)
+
+lookup %>%
+  group_by(admin0_name) %>%
+  slice(1) %>%
+  filter(admin0_name %in% repeats)
+# 1 CN          China         
+# 2 DK          Denmark       
+# 3 FR          France        
+# 4 NL          Netherlands   
+# 5 GB          United Kingdom
+# 6 US          US   
+
+lookup <- lookup %>%
+  group_by(admin0_name) %>%
+  slice(1)
 
 lookup$admin0_code[is.na(lookup$admin0_code)] <- "ZZ"
 
-admin0 <- dplyr::left_join(admin0, lookup, by = "country") %>%
+admin0 <- dplyr::left_join(admin0, lookup, by = "admin0_name") %>%
   dplyr::select(admin0_code, date, cases, deaths)
 
 continents <- admin0 %>%
   dplyr::left_join(geoutils::admin0, by = "admin0_code") %>%
   dplyr::group_by(continent_code, date) %>%
+  dplyr::filter(!is.na(continent_code)) %>%
   dplyr::summarise(cases = sum(cases), deaths = sum(deaths))
 
 who_regions <- admin0 %>%
