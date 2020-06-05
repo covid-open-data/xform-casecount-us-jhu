@@ -3,8 +3,7 @@
 ###############################################################################
 .PHONY: run-workflow
 run-workflow:
-	make run-xform
-	make run-git-push
+	make run-xform && make run-validate-csv && make run-git-push
 
 
 ###############################################################################
@@ -12,17 +11,35 @@ run-workflow:
 ###############################################################################
 .PHONY: run-xform
 run-xform:
-	cd .github/actions/run-xform; make dc-up; cd -
+	make -C .github/actions/run-xform dc-up
 
 
 .PHONY: run-xform-build
 run-xform-build:
-	cd .github/actions/run-xform; make dc-up-build; cd -
+	make -C .github/actions/run-xform dc-up-build
 
 
 .PHONY: run-xform-build-no-cache
 run-xform-build-no-cache:
-	cd .github/actions/run-xform; make dc-build-no-cache; cd -
+	make -C .github/actions/run-xform dc-build-no-cache
+
+
+###############################################################################
+# validate-csv
+###############################################################################
+.PHONY: run-validate-csv
+run-validate-csv:
+	make -C .github/actions/validate-csv dc-up
+
+
+.PHONY: run-validate-csv-build
+run-validate-csv-build:
+	make -C .github/actions/validate-csv dc-up-build
+
+
+.PHONY: run-validate-csv-build-no-cache
+run-validate-csv-build-no-cache:
+	make -C .github/actions/validate-csv dc-build-no-cache
 
 
 ###############################################################################
@@ -30,15 +47,15 @@ run-xform-build-no-cache:
 ###############################################################################
 .PHONY: run-git-push
 run-git-push:
-	cd .github/actions/git-push; make dc-up; cd -
+	make -C .github/actions/git-push dc-up
 
 
 .PHONY: run-git-push-build
 run-git-push-build:
-	cd .github/actions/git-push; make dc-up-build; cd -
+	make -C .github/actions/git-push dc-up-build
 
 
 .PHONY: run-git-push-build-no-cache
 run-git-push-build-no-cache:
-	cd .github/actions/git-push; make dc-build-no-cache; cd -
+	make -C .github/actions/git-push dc-build-no-cache
 
