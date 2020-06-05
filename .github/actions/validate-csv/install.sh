@@ -14,5 +14,5 @@ installPipPackage --index-url https://test.pypi.org/simple --extra-index-url htt
 installPipPackage yq
 python --version
 pip --version
-csv-schema --help
+csv-schema --version
 exit $?
