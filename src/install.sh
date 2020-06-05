@@ -6,6 +6,4 @@ source "${GITHUB_WORKSPACE}/.github/scripts/shutils.sh"
 
 installAptPackages r-cran-tidyverse
 
-R -e "remotes::install_github('covid-open-data/geoutils')"
-
 exit 0

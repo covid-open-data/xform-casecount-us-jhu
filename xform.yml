@@ -10,26 +10,20 @@ terms_of_use: https://github.com/CSSEGISandData/COVID-19/blob/master/README.md
 #   for each output by providing those fields in the output entries.
 outputs:
   -
-    description: Daily cumulative case and death counts for all affected countries and territories.
+    description: Daily cumulative case and death counts for all affected US counties.
     type: case-counts
-    file: output/admin0/all.csv
+    file: output/admin2/US.csv
+    admin_level: 2
+    schema: https://raw.githubusercontent.com/covid-open-data/data-registry/master/schemas/case-counts/admin2/v1/admin2_.json
+  -
+    description: Daily cumulative case and death counts for all US states.
+    type: case-counts
+    file: output/admin1/US.csv
+    admin_level: 1
+    schema: https://raw.githubusercontent.com/covid-open-data/data-registry/master/schemas/case-counts/admin1/v1/admin1_.json
+  -
+    description: Daily cumulative case and death counts for the entire US.
+    type: case-counts
+    file: output/admin0/US.csv
     admin_level: 0
     schema: https://raw.githubusercontent.com/covid-open-data/data-registry/master/schemas/case-counts/admin0/v1/admin0.json
-  -
-    description: Daily cumulative case and death counts for each WHO Region.
-    type: case-counts
-    file: output/who_regions.csv
-    admin_level: who_regions
-    schema: https://raw.githubusercontent.com/covid-open-data/data-registry/master/schemas/case-counts/who_regions/v1/who_regions.json
-  -
-    description: Daily cumulative case and death counts for each continent.
-    type: case-counts
-    file: output/continents.csv
-    admin_level: continents
-    schema: https://raw.githubusercontent.com/covid-open-data/data-registry/master/schemas/case-counts/continents/v1/continents.json
-  -
-    description: Daily cumulative case and death counts globally.
-    type: case-counts
-    file: output/global.csv
-    admin_level: global
-    schema: https://raw.githubusercontent.com/covid-open-data/data-registry/master/schemas/case-counts/global/v1/global.json
