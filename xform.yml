@@ -11,25 +11,25 @@ terms_of_use: https://github.com/CSSEGISandData/COVID-19/blob/master/README.md
 outputs:
   -
     description: Daily cumulative case and death counts for all affected countries and territories.
-    type: casecounts
+    type: case-counts
     file: output/admin0/all.csv
     admin_level: 0
-    schema: https://raw.githubusercontent.com/covid-open-data/data-registry/case-counts-schemas/schemas/case-counts/admin0/v1/admin0.json
+    schema: https://raw.githubusercontent.com/covid-open-data/data-registry/master/schemas/case-counts/admin0/v1/admin0.json
   -
     description: Daily cumulative case and death counts for each WHO Region.
-    type: casecounts
+    type: case-counts
     file: output/who_regions.csv
     admin_level: who_regions
-    schema: https://raw.githubusercontent.com/covid-open-data/data-registry/case-counts-schemas/schemas/case-counts/who_regions/v1/who_regions.json
+    schema: https://raw.githubusercontent.com/covid-open-data/data-registry/master/schemas/case-counts/who_regions/v1/who_regions.json
   -
     description: Daily cumulative case and death counts for each continent.
-    type: casecounts
+    type: case-counts
     file: output/continents.csv
     admin_level: continents
-    schema: https://github.com/covid-open-data/data-registry/blob/case-counts-schemas/schemas/case-counts/continents/v1/continents.json
+    schema: https://raw.githubusercontent.com/covid-open-data/data-registry/master/schemas/case-counts/continents/v1/continents.json
   -
     description: Daily cumulative case and death counts globally.
-    type: casecounts
+    type: case-counts
     file: output/global.csv
     admin_level: global
-    schema: https://raw.githubusercontent.com/covid-open-data/data-registry/case-counts-schemas/schemas/case-counts/global/v1/global.json
+    schema: https://raw.githubusercontent.com/covid-open-data/data-registry/master/schemas/case-counts/global/v1/global.json

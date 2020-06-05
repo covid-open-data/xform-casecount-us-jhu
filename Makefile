@@ -3,8 +3,7 @@
 ###############################################################################
 .PHONY: run-workflow
 run-workflow:
-	make run-xform
-	make run-git-push
+	make run-xform && make run-validate-csv && make run-git-push
 
 
 ###############################################################################
