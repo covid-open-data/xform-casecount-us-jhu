@@ -17,6 +17,6 @@ jobs:
         with:
           xform-command: '${GITHUB_WORKSPACE}/src/xform.sh'
       - name: Validate CSV Files
-          uses: ./.github/actions/validate-csv
+        uses: ./.github/actions/validate-csv
       - name: Git Push
         uses: ./.github/actions/git-push
