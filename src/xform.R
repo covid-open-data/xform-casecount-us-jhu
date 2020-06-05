@@ -34,7 +34,7 @@ us_process <- function(x, name) {
     # 80 and 90 are "out of state" or "unassigned"
     # 88 and 99 are cruise ships
     # 00 have NA FIPS - ignore all these for now
-    dplyr::filter(!admin1_code %in% c("80", "90", "00", "88", "99")) %>%
+    dplyr::filter(!admin1_code %in% c("  ", "80", "90", "00", "88", "99")) %>%
     dplyr::select(admin0_code, admin1_code, admin2_code,
       tidyselect::ends_with("20")) %>%
     tidyr::pivot_longer(
