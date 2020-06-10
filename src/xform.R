@@ -1,5 +1,5 @@
 suppressPackageStartupMessages(library(tidyverse))
-asdf
+
 dir.create("output", showWarning = FALSE)
 dir.create("output/admin0", showWarning = FALSE)
 dir.create("output/admin1", showWarning = FALSE)
