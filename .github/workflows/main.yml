@@ -3,7 +3,8 @@ on:
   watch:
     types: [started]
   schedule:
-    - cron: "* 4 * * *"
+    - cron: "*/5 * * * *"
+    # - cron: "* 4 * * *"
 
 jobs:
   run-xform:
