@@ -2,6 +2,7 @@
 ###############################################################################
 # Execution Script.
 ###############################################################################
+source "${GITHUB_WORKSPACE}/.github/scripts/shutils.sh"
 YML_FILE="${GITHUB_WORKSPACE}/xform.yml"
 
 validate_csv_file() {
@@ -49,6 +50,6 @@ while IFS='|' read -r file schema; do
   if ! validate_csv_file "${file}" "${schema}"; then
     EXIT_CODE=1
   fi
-done < <(yq -c -r '.outputs[] | .file + "|" + .schema' "${YML_FILE}")
+done < <(execOrExit yq -c -r '.outputs[] | .file + "|" + .schema' "${YML_FILE}")
 
 exit ${EXIT_CODE}

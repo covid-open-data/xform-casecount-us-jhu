@@ -35,3 +35,12 @@ installPipPackage() {
     exit 1
   fi
 }
+
+# Execute a command and exit with status 1 if the command fails.
+# Args: command to execute
+# Example: execOrExit ls -al
+execOrExit() {
+  if ! "$@"; then
+    exit 1
+  fi
+}
