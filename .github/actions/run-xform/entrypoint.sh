@@ -2,8 +2,8 @@
 ###############################################################################
 # Docker container entrypoint script.
 ###############################################################################
-ACTION_DIR="${GITHUB_WORKSPACE}/.github/actions/run-xform"
-XFORM_COMMAND=$@
+export ACTION_DIR="${GITHUB_WORKSPACE}/.github/actions/run-xform"
+export XFORM_COMMAND=$@
 
 if [ -z "${XFORM_COMMAND}" ]; then
   echo "xform-command not provided, aborting."
