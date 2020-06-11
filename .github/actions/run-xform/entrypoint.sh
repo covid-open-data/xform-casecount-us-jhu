@@ -3,6 +3,7 @@
 # Docker container entrypoint script.
 ###############################################################################
 export ACTION_DIR="${GITHUB_WORKSPACE}/.github/actions/run-xform"
+source "${GITHUB_WORKSPACE}/.github/scripts/shutils.sh"
 export XFORM_COMMAND=$@
 
 if [ -z "${XFORM_COMMAND}" ]; then
@@ -14,12 +15,13 @@ source "${GITHUB_WORKSPACE}/.github/scripts/container.sh"
 
 echo "Executing: ${XFORM_COMMAND}"
 eval ${XFORM_COMMAND}
-XFORM_STATUS=$?
+ACTION_STATUS=$?
 
-if [ ${XFORM_STATUS} -eq 0 ]; then
+if [ ${ACTION_STATUS} -eq 0 ]; then
   echo "Success."
 else
+  createOnFailedGitHubIssue
   echo "Fail."
 fi
 
-exit ${XFORM_STATUS}
+exit ${ACTION_STATUS}

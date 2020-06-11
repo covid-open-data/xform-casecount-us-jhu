@@ -14,9 +14,15 @@ jobs:
         uses: actions/checkout@v2
       - name: Run Xform
         uses: ./.github/actions/run-xform
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           xform-command: '${GITHUB_WORKSPACE}/src/xform.sh'
       - name: Validate CSV Files
         uses: ./.github/actions/validate-csv
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Git Push
         uses: ./.github/actions/git-push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

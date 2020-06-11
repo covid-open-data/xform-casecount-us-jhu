@@ -37,10 +37,4 @@ else
 fi
 PUSH_STATUS=$?
 
-if [ ${PUSH_STATUS} -eq 0 ]; then
-  echo "Success."
-else
-  echo "Fail."
-fi
-
 exit ${PUSH_STATUS}

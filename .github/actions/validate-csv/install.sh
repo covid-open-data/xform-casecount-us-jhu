@@ -3,7 +3,7 @@
 # Install base container dependencies.
 ###############################################################################
 source "${GITHUB_WORKSPACE}/.github/scripts/shutils.sh"
-installAptPackages apt-utils software-properties-common dirmngr apt-transport-https
+installAptPackages apt-utils software-properties-common dirmngr apt-transport-https curl
 add-apt-repository ppa:deadsnakes/ppa
 apt-get update
 installAptPackages python3.7 python3-pip wget jq

@@ -44,3 +44,24 @@ execOrExit() {
     exit 1
   fi
 }
+
+# Creates a GitHub action failure issue.
+# Args: None.
+createOnFailedGitHubIssue() {
+  for REQUIRED_VAR in 'GITHUB_TOKEN' 'GITHUB_ACTION' 'GITHUB_REPOSITORY'; do
+    if [ -z "${!REQUIRED_VAR}" ]; then
+      echo "WARNING: ${REQUIRED_VAR} environment variable not set. Cannot create GitHub issue."
+      return 1
+    fi
+  done
+
+  echo "Creating GitHub Issue for action: ${GITHUB_ACTION}"
+  curl --request POST \
+    --url https://api.github.com/repos/${GITHUB_REPOSITORY}/issues \
+    --header "authorization: Bearer ${GITHUB_TOKEN}" \
+    --header 'content-type: application/json' \
+    --data "{
+          \"title\": \"GitHub Action FAILED: ${GITHUB_ACTION}\",
+          \"body\": \"This is an automated issue. See repo actions for details.\"
+          }"
+}
