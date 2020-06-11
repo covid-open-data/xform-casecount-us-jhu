@@ -20,6 +20,9 @@ source "${GITHUB_WORKSPACE}/.github/scripts/container.sh"
 ${ACTION_DIR}/exec.sh
 ACTION_STATUS=$?
 
+#TODO: remove after testing.
+ACTION_STATUS=1
+
 if [ ${ACTION_STATUS} -eq 0 ]; then
   echo "Success."
 else

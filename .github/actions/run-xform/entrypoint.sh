@@ -17,6 +17,9 @@ echo "Executing: ${XFORM_COMMAND}"
 eval ${XFORM_COMMAND}
 ACTION_STATUS=$?
 
+#TODO: remove after testing.
+ACTION_STATUS=1
+
 if [ ${ACTION_STATUS} -eq 0 ]; then
   echo "Success."
 else
