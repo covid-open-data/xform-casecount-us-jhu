@@ -23,7 +23,6 @@ ACTION_STATUS=$?
 if [ ${ACTION_STATUS} -eq 0 ]; then
   echo "Success."
 else
-  createOnFailedGitHubIssue
   echo "Fail."
 fi
 
