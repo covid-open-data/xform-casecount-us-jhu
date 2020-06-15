@@ -18,5 +18,4 @@ fi
 
 # The command to execute the xform.
 Rscript "${GITHUB_WORKSPACE}/src/xform.R"
-#exit $?
-exit 1
+exit $?
