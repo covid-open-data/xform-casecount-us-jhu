@@ -1,7 +1,7 @@
 # Run every day at 2am Pacific
 on:
-  watch:
-    types: [started]
+  # watch:
+  #   types: [started]
   schedule:
     - cron: "* 9 * * *"
 
@@ -14,14 +14,14 @@ jobs:
         uses: actions/checkout@v2
       - name: Run Xform
         uses: ./.github/actions/run-xform
-#        with:
-#          xform-command: '${GITHUB_WORKSPACE}/src/xform.sh'
+        with:
+          xform-command: '${GITHUB_WORKSPACE}/src/xform.sh'
       - name: Validate CSV Files
         uses: ./.github/actions/validate-csv
       - name: Git Push
         uses: ./.github/actions/git-push
-#        with:
-#          push-dir: 'output'
+        with:
+          push-dir: 'output'
       - name: Failure Notification
         if: failure()
         run: |
